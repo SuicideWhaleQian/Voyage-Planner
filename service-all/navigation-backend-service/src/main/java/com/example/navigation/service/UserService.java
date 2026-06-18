@@ -20,4 +20,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("用户不存在"));
     }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

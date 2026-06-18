@@ -9,5 +9,17 @@ Content-Type: application/json
 
 
 ### 成长路线测试
-GET http://localhost:8081/api/roadmap
+GET https://localhost:8081/api/roadmap
 //Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIiwiaWF0IjoxNzgxNzg5MTU0LCJleHAiOjE3ODIzOTM5NTR9.TD_ELPNi03t0on0e8SosmxHTs-0PUJgEilihdlK7Sbk
+
+
+
+### 注册测试
+POST https://localhost:8081/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "123456",
+  "name": "张三"
+}
