@@ -6,7 +6,6 @@ import com.example.navigation.service.RoadmapService;
 import com.example.navigation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,9 +23,9 @@ public class RoadmapController {
     private UserService userService;
 
     @GetMapping
-    public Result<Map<String, Object>> getRoadmap(@RequestAttribute("userId") String userId) {
-        Long userIdLong = Long.parseLong(userId);
-        User user = userService.findById(userIdLong);
+    public Result<Map<String, Object>> getRoadmap() {
+        // 写死用户ID = 1
+        User user = userService.findById(1L);
 
         Map<String, Object> data = roadmapService.getRoadmap(user);
 

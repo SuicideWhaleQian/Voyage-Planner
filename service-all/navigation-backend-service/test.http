@@ -1,5 +1,5 @@
 ### 登录测试
-POST http://localhost:8081/api/auth/login
+POST https://localhost:8081/api/auth/login
 Content-Type: application/json
 
 {
@@ -10,4 +10,4 @@ Content-Type: application/json
 
 ### 成长路线测试
 GET http://localhost:8081/api/roadmap
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIiwiaWF0IjoxNzgxNzg5MTU0LCJleHAiOjE3ODIzOTM5NTR9.TD_ELPNi03t0on0e8SosmxHTs-0PUJgEilihdlK7Sbk
+//Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIiwiaWF0IjoxNzgxNzg5MTU0LCJleHAiOjE3ODIzOTM5NTR9.TD_ELPNi03t0on0e8SosmxHTs-0PUJgEilihdlK7Sbk

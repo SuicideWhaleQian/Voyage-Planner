@@ -1,5 +1,10 @@
 server:
   port: 8081
+  ssl:
+    enabled: true
+    key-store: file:D:/project/Voyage-Planner/service-all/navigation-backend-service/src/main/resources/ssl/www.deepdistillation.xyz.pfx
+    key-store-password: uj2plp72
+    key-store-type: PKCS12
 
 spring:
   application:
