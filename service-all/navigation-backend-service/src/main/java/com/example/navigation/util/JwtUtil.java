@@ -1,5 +1,6 @@
 package com.example.navigation.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -20,4 +21,27 @@ public class JwtUtil {
                 .signWith(KEY)
                 .compact();
     }
+
+    // ⭐ 新增这个方法
+    public boolean validateToken(String token) {
+        try {
+            parseToken(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Claims parseToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public String getUserId(String token) {
+        return parseToken(token).get("userId", String.class);
+    }
+
 }
