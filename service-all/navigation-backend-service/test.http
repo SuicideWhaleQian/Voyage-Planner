@@ -23,3 +23,9 @@ Content-Type: application/json
   "password": "123456",
   "name": "张三"
 }
+
+####文件上传测试
+POST https://localhost:8081/api/files/upload
+Content-Type: multipart/form-data
+
+file: [选择图片文件]

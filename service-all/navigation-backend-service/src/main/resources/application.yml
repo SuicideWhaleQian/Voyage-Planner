@@ -9,6 +9,10 @@ server:
 spring:
   application:
     name: navigation-backend-service
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
