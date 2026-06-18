@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/files")
@@ -25,6 +24,9 @@ public class FileController {
 
     @Value("${file.upload.dir:uploads}")
     private String uploadDir;
+
+    @Value("${file.upload.base-url:https://deepdistillation.xyz:8081}")
+    private String baseUrl;
 
     // 允许的文件类型
     private static final String[] ALLOWED_TYPES = {
@@ -84,7 +86,7 @@ public class FileController {
             Files.write(path, file.getBytes());
 
             // 6. 返回访问URL
-            String url = "/uploads/" + relativePath.replace("\\", "/");
+            String url = baseUrl + "/uploads/" + relativePath.replace("\\", "/");
 
             Map<String, Object> data = new HashMap<>();
             data.put("url", url);

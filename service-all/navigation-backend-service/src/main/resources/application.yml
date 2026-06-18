@@ -33,3 +33,8 @@ spring:
     init:
       mode: never
       data-locations: classpath:data.sql
+
+  file:
+    upload:
+      dir: uploads
+      base-url: https://deepdistillation.xyz:8081
