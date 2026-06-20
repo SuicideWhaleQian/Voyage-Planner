@@ -6,6 +6,7 @@ import com.example.navigation.service.RoadmapService;
 import com.example.navigation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,20 +23,12 @@ public class RoadmapController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public Result<Map<String, Object>> getRoadmap() {
-        // 写死用户ID = 1
-        User user = userService.findById(1L);
+    @GetMapping("/{userId}")
+    public Result<Map<String, Object>> getRoadmap(@PathVariable Long userId) {
+        // 根据用户ID查询用户
+        User user = userService.findById(userId);
 
         Map<String, Object> data = roadmapService.getRoadmap(user);
-
-        // 追加用户基本信息
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("name", user.getName());
-        userInfo.put("avatar", user.getAvatar());
-        userInfo.put("targetRank", user.getTargetRank());
-
-        data.put("user", userInfo);
 
         return Result.success(data);
     }

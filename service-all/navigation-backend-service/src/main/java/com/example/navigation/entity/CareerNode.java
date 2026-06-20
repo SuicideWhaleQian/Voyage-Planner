@@ -28,6 +28,8 @@ public class CareerNode {
     @JoinColumn(name = "certificate_type_id")
     private  CertificateType certificateType;
 
+    @Transient  // 不存数据库，只用于返回
+    private Integer requiredYears;
 
 
 }

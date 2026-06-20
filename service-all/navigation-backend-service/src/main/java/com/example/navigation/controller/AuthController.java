@@ -4,13 +4,12 @@ import com.example.navigation.entity.User;
 import com.example.navigation.model.dto.LoginRequest;
 import com.example.navigation.model.dto.RegisterRequest;
 import com.example.navigation.model.dto.Result;
+import com.example.navigation.model.dto.UpdateRankRequest;
 import com.example.navigation.service.UserService;
 import com.example.navigation.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -83,4 +82,15 @@ public class AuthController {
 
         return Result.success( data);
     }
+
+    @PutMapping("/{userId}/rank")
+    public Result<User> updateRank(@PathVariable Long userId, @RequestBody UpdateRankRequest request) {
+        User user = userService.findById(userId);
+        user.setCurrentRank(request.getCurrentRank());
+        user.setTargetRank(request.getTargetRank());
+        User updated = userService.update(user);
+        return Result.success(updated);
+    }
+
+
 }

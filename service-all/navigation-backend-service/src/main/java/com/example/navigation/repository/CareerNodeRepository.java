@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface CareerNodeRepository extends JpaRepository<CareerNode, Integer> {
     List<CareerNode> findAllByOrderBySortOrderAsc();
+
+    CareerNode findByRankCode(String currentRank);
 }
