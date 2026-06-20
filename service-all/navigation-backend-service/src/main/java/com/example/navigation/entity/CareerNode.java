@@ -18,18 +18,16 @@ public class CareerNode {
     @Column(name = "rank_name", nullable = false, length = 50)
     private String rankName;
 
-    @Column(nullable = false, length = 50)
-    private String duration;
-
-    @Column(name = "core_cert", nullable = false, length = 100)
-    private String coreCert;
-
     @Column(name = "min_years")
     private Integer minYears;
 
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder;
 
-    @Column(name = "is_active")
-    private Integer isActive = 1;
+    @ManyToOne
+    @JoinColumn(name = "certificate_type_id")
+    private  CertificateType certificateType;
+
+
+
 }

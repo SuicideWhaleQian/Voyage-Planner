@@ -9,8 +9,9 @@ import lombok.Data;
 public class User {
 
     @Id
+    @Column(name = "user_id", length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                 // 用户ID，自增主键
+    private Long userId;                                 // 用户ID，自增主键
 
     @Column(unique = true, nullable = false, length = 50)
     private String username;                         // 用户名，唯一，不能为空

@@ -44,7 +44,7 @@ public class AuthController {
             return Result.error(401, "用户名或密码错误");
         }
 
-        String token = jwtUtil.generateToken(user.getId().toString());
+        String token = jwtUtil.generateToken(user.getUserId().toString());
 
         Map<String, Object> data = new HashMap<>();
         data.put("token", token);
@@ -77,7 +77,7 @@ public class AuthController {
 
         // 4. 返回结果
         Map<String, Object> data = new HashMap<>();
-        data.put("id", saved.getId());
+        data.put("id", saved.getUserId());
         data.put("username", saved.getUsername());
         data.put("name", saved.getName());
 

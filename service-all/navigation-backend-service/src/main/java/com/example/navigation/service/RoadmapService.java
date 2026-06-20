@@ -22,12 +22,12 @@ public class RoadmapService {
         int progress = 0;
 
         // 计算进度
-        for (int i = 0; i < allNodes.size(); i++) {
-            if (currentRank != null && currentRank.equals(allNodes.get(i).getRankCode())) {
-                progress = (i + 1) * 100 / allNodes.size();
-                break;
-            }
-        }
+//        for (int i = 0; i < allNodes.size(); i++) {
+//            if (currentRank != null && currentRank.equals(allNodes.get(i).getRankCode())) {
+//                progress = (i + 1) * 100 / allNodes.size();
+//                break;
+//            }
+//        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("roadmap", allNodes);
