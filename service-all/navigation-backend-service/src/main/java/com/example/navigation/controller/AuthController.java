@@ -83,6 +83,13 @@ public class AuthController {
         return Result.success( data);
     }
 
+
+    /**
+     * 用户选择当前职位和目标职位
+     * @param userId
+     * @param request
+     * @return
+     */
     @PutMapping("/{userId}/rank")
     public Result<User> updateRank(@PathVariable Long userId, @RequestBody UpdateRankRequest request) {
         User user = userService.findById(userId);
