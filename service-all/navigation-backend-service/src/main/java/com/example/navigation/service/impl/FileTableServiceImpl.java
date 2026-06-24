@@ -1,7 +1,9 @@
 package com.example.navigation.service.impl;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -25,13 +27,12 @@ public class FileTableServiceImpl implements FileTableService {
 
     @Override
     public String uploadFile(MultipartFile file) {
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             throw new BusinessException(400, "上传的文件不能为空");
         }
 
         // 获取文件原名称
         String originalFilename = file.getOriginalFilename();
-
         if (originalFilename == null || originalFilename.trim().isEmpty()) {
             throw new BusinessException(400, "文件名称不能为空");
         }
@@ -40,39 +41,31 @@ public class FileTableServiceImpl implements FileTableService {
         if (lastDotIndexOf == -1 || lastDotIndexOf == originalFilename.length() - 1) {
             throw new BusinessException(400, "文件格式不正确");
         }
+
         // 获取文件后缀
         String suffix = originalFilename.substring(lastDotIndexOf);
-
         // 新的文件名称
         String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
 
-        String uploadDir = filesServerConfig.accessPath();
-
-        File dir = new File(uploadDir);
-
-        // 如果不存在则创建
-        if (!dir.exists() && dir.mkdirs()) {
-            throw new BusinessException(500, "文件目录创建失败");
-        }
-
-        File destFile = new File(dir, newFileName);
-
         try {
-            // 保存文件
-            file.transferTo(destFile);
+            // 上传的文件路径
+            Path uploadDir = Paths.get(filesServerConfig.uploadPath())
+                    .toAbsolutePath()
+                    .normalize();
+            Files.createDirectories(uploadDir);
+            Path destPath = uploadDir.resolve(newFileName);
 
-            String networkPath = filesServerConfig.networkPath() + newFileName;
-            String localPath = destFile.getAbsolutePath();
+            file.transferTo(destPath);
+            String networkPath = filesServerConfig.networkPath() +"/"+ newFileName;
 
             FileTable fileTable = new FileTable(
                     null,
                     networkPath,
-                    localPath,
+                    destPath.toString(),
                     suffix);
-
             fileTableRepository.save(fileTable);
 
-            return filesServerConfig.networkPath() + newFileName;
+            return networkPath;
         } catch (IllegalStateException | IOException e) {
             throw new BusinessException(500, "文件保存失败" + e);
         }

@@ -31,8 +31,8 @@ spring:
 
 files:
   network-path: https://deepdistillation.online:${server.port}
-  access-path: /static/**
-  upload-path: /upload
+  access-path: /**
+  upload-path: ./upload
   types:
   - image/png
   - image/jpeg

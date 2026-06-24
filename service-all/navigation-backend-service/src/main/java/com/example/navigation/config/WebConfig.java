@@ -1,5 +1,7 @@
 package com.example.navigation.config;
 
+import java.io.File;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -24,8 +26,22 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        String uploadPath = filesServerConfig.uploadPath();
+
+        File uploadDir = new File(uploadPath);
+
+        if (!uploadDir.exists()) {
+            boolean created = uploadDir.mkdirs();
+
+            if (!created) {
+                throw new RuntimeException("上传目录创建失败：" + uploadDir.getAbsolutePath());
+            }
+        }
+
+        System.out.println("上传文件保存目录:" + uploadDir.getAbsolutePath());
         System.out.println("网络资源地址：" + filesServerConfig.networkPath() + "/资源");
         registry.addResourceHandler(filesServerConfig.accessPath())
-                .addResourceLocations(filesServerConfig.uploadPath());
+                .addResourceLocations("file:" + filesServerConfig.uploadPath());
     }
 }
