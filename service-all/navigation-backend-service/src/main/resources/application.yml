@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 8080
   ssl:
     enabled: true
-    key-store: file:D:/project/Voyage-Planner/service-all/navigation-backend-service/src/main/resources/ssl/www.deepdistillation.xyz.pfx
-    key-store-password: uj2plp72
+    key-store: classpath:/ssl/deepdistillation.online.pfx
+    key-store-password: 11uxoad5
     key-store-type: PKCS12
 
 spring:
@@ -11,12 +11,12 @@ spring:
     name: navigation-backend-service
   servlet:
     multipart:
-      max-request-size: 10MB
-      max-file-size: 10MB
+      max-request-size: 100MB
+      max-file-size: 100MB
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.235:3306/voyage_planner_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.1.235:3306/voyage_planner_db_dev?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 123456
 
@@ -29,12 +29,11 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  sql:
-    init:
-      mode: never
-      data-locations: classpath:data.sql
-
-  file:
-    upload:
-      dir: uploads
-      base-url: https://deepdistillation.xyz:8081
+files:
+  network-path: https://deepdistillation.online:${server.port}
+  access-path: /static/**
+  upload-path: classpath:/static/
+  types:
+  - image/png
+  - image/jpeg
+  - application/pdf

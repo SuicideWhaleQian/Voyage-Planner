@@ -1,29 +1,31 @@
 package com.example.navigation.config;
 
-import com.example.navigation.interceptor.AuthInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private AuthInterceptor authInterceptor;
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authInterceptor)
-//                .addPathPatterns("/api/**")
-//                .excludePathPatterns("/api/auth/login"," /api/roadmap");
-//    }
+    private final FilesServerConfig filesServerConfig;
+
+    public WebConfig(FilesServerConfig filesServerConfig) {
+        this.filesServerConfig = filesServerConfig;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                .allowedOrigins("*");
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 让上传的文件可以通过 /uploads/** 访问
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/");
+        System.out.println("网络资源地址：" + filesServerConfig.networkPath() + "/资源");
+        registry.addResourceHandler(filesServerConfig.accessPath())
+                .addResourceLocations(filesServerConfig.uploadPath());
     }
 }

@@ -7,6 +7,10 @@ target/
 **/ssl/**
 # 用户上传文件
 uploads/
+**/static/*.png
+**/static/*.jpg
+**/static/*.pdf
+**/static/*.svg
 
 ### STS ###
 .apt_generated

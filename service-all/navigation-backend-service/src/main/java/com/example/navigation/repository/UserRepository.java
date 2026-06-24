@@ -1,19 +1,9 @@
 package com.example.navigation.repository;
 
-import com.example.navigation.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import com.example.navigation.entity.user.User;
 
-import java.util.Optional;
-
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    /**
-     * 根据用户名查询用户（登录用）
-     */
-    Optional<User> findByUsername(String username);
-
-
+public interface UserRepository extends JpaRepository<User,Integer>{
+    
 }
