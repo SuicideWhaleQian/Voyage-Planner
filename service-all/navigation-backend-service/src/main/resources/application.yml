@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 8081
   ssl:
     enabled: true
-    key-store: classpath:/ssl/deepdistillation.online.pfx
-    key-store-password: 11uxoad5
+    key-store: classpath:/ssl/www.deepdistillation.xyz.pfx
+    key-store-password: uj2plp72
     key-store-type: PKCS12
 
 spring:
@@ -30,7 +30,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 files:
-  network-path: https://deepdistillation.online:${server.port}
+  network-path: https://deepdistillation.xyz:${server.port}
   access-path: /**
   upload-path: ./upload
   types:
