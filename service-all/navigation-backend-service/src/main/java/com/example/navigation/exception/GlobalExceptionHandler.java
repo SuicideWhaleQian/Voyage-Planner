@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public Result<Void> handleBusinessException(BusinessException e) {
-        return Result.fail(e.getMessage());
+        return Result.fail(e.getCode(),e.getMessage());
     }
 
     /**
@@ -27,6 +27,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public Result<Void> handleException(Exception e) {
-        return Result.fail(500, "服务器内部异常");
+        return Result.fail(500, "服务器内部异常"+e);
     }
 }
