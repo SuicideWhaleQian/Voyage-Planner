@@ -1,5 +1,7 @@
 package com.example.navigation.service.impl;
 
+import com.example.navigation.dto.request.UserRegisterRequest;
+import com.example.navigation.dto.response.UserRegisterResponse;
 import org.springframework.stereotype.Service;
 
 import com.example.navigation.dto.request.UserLoginRequest;
@@ -48,4 +50,40 @@ public class UserServiceImpl implements UserService {
                 positionLevelInfo);
     }
 
+
+    @Override
+    public UserRegisterResponse register(UserRegisterRequest request) {
+        // 1. 参数校验
+        if (request.getUserName() == null || request.getUserName().trim().isEmpty()) {
+            return new UserRegisterResponse(null, null);
+        }
+
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+            return new UserRegisterResponse(null, null);
+        }
+
+        // 2. 检查用户名是否已存在
+        if (userRepository.existsByUserName(request.getUserName())) {
+            return new UserRegisterResponse(null, request.getUserName());
+        }
+
+        // 3. 创建新用户
+
+        User newUser = new User();
+        newUser.setUserName(request.getUserName());
+        newUser.setUserAccount(request.getUserName());
+        newUser.setPassword(request.getPassword());
+        newUser.setAvatarUrl(null);
+        newUser.setPositionLevel(null);
+
+         //4. 保存用户
+        User savedUser = userRepository.save(newUser);
+
+        // 5. 返回注册结果
+        return new UserRegisterResponse(
+                savedUser.getUserId(),
+                savedUser.getUserName()
+        );
+
+    }
 }

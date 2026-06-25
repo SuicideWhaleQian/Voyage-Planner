@@ -40,7 +40,7 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     private PositionLevel positionLevel;
 
-    protected User() {
+    public User() {
 
     }
 
