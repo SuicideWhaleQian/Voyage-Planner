@@ -62,6 +62,7 @@ public class CertificateEntityServiceImpl implements CertificateEntityService {
 
     }
 
+    @Override
     public List<CertificateInfo> findAllCertificateByUser(Integer userId) {
         if (userId == null) {
             throw new BusinessException(401, "请上传正确用户");
