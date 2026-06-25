@@ -63,7 +63,7 @@ public class FileTableServiceImpl implements FileTableService {
             String networkPath = filesServerConfig.networkPath() + "/" + newFileName;
 
             FileTable fileTable = new FileTable(
-                    null,
+
                     networkPath,
                     destPath.toString(),
                     suffix);

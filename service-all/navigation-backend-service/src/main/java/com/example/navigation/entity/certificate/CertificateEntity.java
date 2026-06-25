@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 @Table(name = "t_certificates")
 @Comment("证书表")
 public class CertificateEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("证书id")
@@ -28,23 +29,23 @@ public class CertificateEntity {
     @Comment("证书类型")
     private CertificateEntityType certificateType;
 
-    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     @Comment("证书隶属用户")
     private User user;
 
     @Comment("证书照片地址")
     private String certificatePhotoUrl;
 
-    public CertificateEntity(Integer certificateId, CertificateEntityType certificateType, User user,
+    protected CertificateEntity() {
+    }
+
+    public CertificateEntity(CertificateEntityType certificateType, User user,
             String certificatePhotoUrl) {
-        this.certificateId = certificateId;
         this.certificateType = certificateType;
         this.user = user;
         this.certificatePhotoUrl = certificatePhotoUrl;
     }
-
-
 
     public Integer getCertificateId() {
         return certificateId;

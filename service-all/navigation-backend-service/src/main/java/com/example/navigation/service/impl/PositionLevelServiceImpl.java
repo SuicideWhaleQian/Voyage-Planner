@@ -1,17 +1,20 @@
 package com.example.navigation.service.impl;
 
+import com.example.navigation.dto.response.CertificateTypeInfo;
 import com.example.navigation.dto.response.PositionLevelInfo;
+import com.example.navigation.entity.certificate.CertificateEntityType;
 import com.example.navigation.entity.position.PositionLevel;
 import com.example.navigation.entity.user.User;
 import com.example.navigation.exception.BusinessException;
 import com.example.navigation.repository.PositionLevelRepository;
 import com.example.navigation.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.navigation.service.PositionLevelService;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PositionLevelServiceImpl implements PositionLevelService {
@@ -26,22 +29,24 @@ public class PositionLevelServiceImpl implements PositionLevelService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PositionLevelInfo> findAllPositionLevels() {
-
+        // 拿到所有职位信息
         List<PositionLevel> positionLevels = positionLevelRepository.findAll();
 
         if (positionLevels.isEmpty()) {
             return List.of();
         }
 
-        return positionLevels.stream()
-                .map(level -> new PositionLevelInfo(
-                        level.getPositionId(),
-                        level.getPositionName()))
-                .collect(Collectors.toList());
+        List<PositionLevelInfo> list = positionLevels.stream()
+                .map(this::positionLevelEntityTransformToPositionLevelInfo)
+                .toList();
+
+        return list;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PositionLevelInfo findPositionLevelByUserId(Integer userId) {
         if (userId == null) {
             throw new BusinessException(400, "用户ID不能为空");
@@ -57,9 +62,28 @@ public class PositionLevelServiceImpl implements PositionLevelService {
             throw new BusinessException(404, "该用户未设置职位级别");
         }
 
-        return new PositionLevelInfo(
-                positionLevel.getPositionId(),
-                positionLevel.getPositionName());
+        return positionLevelEntityTransformToPositionLevelInfo(positionLevel);
     }
 
+    private PositionLevelInfo positionLevelEntityTransformToPositionLevelInfo(PositionLevel positionLevel) {
+        List<CertificateEntityType> certificates = positionLevel.getCertificates();
+        // 拿到职位需求证书类型
+        if (certificates == null) {
+            certificates = new ArrayList<>();
+        }
+        List<CertificateTypeInfo> list = certificates.stream()
+                .map(this::certificateTransformToCertificateInfo)
+                .toList();
+
+        return new PositionLevelInfo(
+                positionLevel.getPositionId(),
+                positionLevel.getPositionName(),
+                list);
+    }
+
+    private CertificateTypeInfo certificateTransformToCertificateInfo(CertificateEntityType certificateType) {
+        return new CertificateTypeInfo(
+                certificateType.getCertificateTypeId(),
+                certificateType.getCertificateTypeName());
+    }
 }

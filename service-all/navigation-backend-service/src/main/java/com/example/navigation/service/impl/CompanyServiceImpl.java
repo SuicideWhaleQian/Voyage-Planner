@@ -32,6 +32,10 @@ public class CompanyServiceImpl implements CompanyService {
             throw new BusinessException(401, "公司名称不能为空");
         }
 
+        companyRepository.findByCompanyName(companyName).ifPresent(company -> {
+            throw new BusinessException(401, company.getCompanyName() + "已经被使用，请更换名称");
+        });
+
         String certificateImageUrl = entity.businessLicense();
         if (certificateImageUrl == null || certificateImageUrl.isEmpty()) {
             throw new BusinessException(401, "公司营业执照不能为空");
@@ -46,7 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
         String randomAccount = UserUtil.generateAccount("1023");
 
         Company newCompany = new Company(
-                null,
+
                 entity.companyName(),
                 randomAccount,
                 entity.password(),

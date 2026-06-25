@@ -1,9 +1,7 @@
 package com.example.navigation.dto.response;
 
 public record CertificateInfo(
-    String certificateName,
-    String certificateImageUrl
-)
-{
-    
+                Integer userId,
+                CertificateTypeInfo certificateInfo,
+                String certificateImageUrl) {
 }

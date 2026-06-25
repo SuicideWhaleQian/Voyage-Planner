@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 !**/src/test/**/target/
 **/ssl/**
+**/test/**
 # 用户上传文件
 uploads/
 **/static/*.png

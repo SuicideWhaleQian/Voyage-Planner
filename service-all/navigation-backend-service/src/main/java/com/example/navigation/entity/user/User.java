@@ -44,9 +44,8 @@ public class User {
 
     }
 
-    public User(Integer userId, String userName, String userAccount, String password, String avatarUrl,
+    public User(String userName, String userAccount, String password, String avatarUrl,
             PositionLevel positionLevel) {
-        this.userId = userId;
         this.userName = userName;
         this.userAccount = userAccount;
         this.password = password;

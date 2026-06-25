@@ -42,8 +42,7 @@ public class Plan {
 
     }
 
-    public Plan(Integer planId, User user, PositionLevel currentPosition, PositionLevel targetPosition) {
-        this.planId = planId;
+    public Plan(User user, PositionLevel currentPosition, PositionLevel targetPosition) {
         this.user = user;
         this.currentPosition = currentPosition;
         this.targetPosition = targetPosition;

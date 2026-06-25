@@ -3,9 +3,11 @@ package com.example.navigation.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.navigation.dto.request.UserUploadCertificateRequest;
 import com.example.navigation.dto.response.CertificateInfo;
+import com.example.navigation.dto.response.CertificateTypeInfo;
 import com.example.navigation.entity.certificate.CertificateEntity;
 import com.example.navigation.entity.certificate.CertificateEntityType;
 import com.example.navigation.entity.user.User;
@@ -52,17 +54,17 @@ public class CertificateEntityServiceImpl implements CertificateEntityService {
         User user = userRepository.findById(certificateTypeId).orElseThrow(() -> new BusinessException(400, "不存在的用户"));
 
         CertificateEntity certificateEntity = new CertificateEntity(
-                null,
                 certificateType,
                 user,
                 certificateImageUrl);
         CertificateEntity save = certificateEntityRepository.save(certificateEntity);
 
-        return new CertificateInfo(save.getCertificateType().getCertificateTypeName(), save.getCertificatePhotoUrl());
+        return certificateEntityTransformToCertificateInfo(save);
 
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CertificateInfo> findAllCertificateByUser(Integer userId) {
         if (userId == null) {
             throw new BusinessException(403, "请上传正确用户");
@@ -80,8 +82,13 @@ public class CertificateEntityServiceImpl implements CertificateEntityService {
     }
 
     private CertificateInfo certificateEntityTransformToCertificateInfo(CertificateEntity certificateEntity) {
+        CertificateTypeInfo certificateTypeInfo = new CertificateTypeInfo(
+                certificateEntity.getCertificateType().getCertificateTypeId(),
+                certificateEntity.getCertificateType().getCertificateTypeName());
 
-        return new CertificateInfo(certificateEntity.getCertificateType().getCertificateTypeName(),
+        return new CertificateInfo(
+                certificateEntity.getUser().getUserId(),
+                certificateTypeInfo,
                 certificateEntity.getCertificatePhotoUrl());
     }
 

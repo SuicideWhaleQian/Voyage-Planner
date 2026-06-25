@@ -2,11 +2,18 @@ package com.example.navigation.service.impl;
 
 import com.example.navigation.dto.request.UserRegisterRequest;
 import com.example.navigation.dto.response.UserRegisterResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.navigation.dto.request.UserLoginRequest;
+import com.example.navigation.dto.response.CertificateTypeInfo;
 import com.example.navigation.dto.response.PositionLevelInfo;
 import com.example.navigation.dto.response.UserInfo;
+import com.example.navigation.entity.certificate.CertificateEntityType;
 import com.example.navigation.entity.position.PositionLevel;
 import com.example.navigation.entity.user.User;
 import com.example.navigation.exception.BusinessException;
@@ -24,6 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserInfo login(UserLoginRequest uLoginRequest) {
         if (uLoginRequest.account() == null || uLoginRequest.account().isEmpty()) {
             throw new BusinessException(200, "账号不能为空");
@@ -38,12 +46,15 @@ public class UserServiceImpl implements UserService {
                                 "账号或密码错误"));
 
         PositionLevel positionLevel = user.getPositionLevel();
+        if (positionLevel == null) {
+            return new UserInfo(user.getUserId(),
+                    user.getUserName(),
+                    user.getUserAccount(),
+                    user.getAvatarUrl(),
+                    null);
+        }
 
-        PositionLevelInfo positionLevelInfo = positionLevel == null
-                ? null
-                : new PositionLevelInfo(
-                        positionLevel.getPositionId(),
-                        positionLevel.getPositionName());
+        PositionLevelInfo positionLevelInfo = positionLevelEntityTransformToPositionLevelInfo(positionLevel);
 
         return new UserInfo(user.getUserId(),
                 user.getUserName(),
@@ -89,5 +100,27 @@ public class UserServiceImpl implements UserService {
                 savedUser.getUserName(),
                 account);
 
+    }
+
+    private PositionLevelInfo positionLevelEntityTransformToPositionLevelInfo(PositionLevel positionLevel) {
+        List<CertificateEntityType> certificates = positionLevel.getCertificates();
+        // 拿到职位需求证书类型
+        if (certificates == null) {
+            certificates = new ArrayList<>();
+        }
+        List<CertificateTypeInfo> list = certificates.stream()
+                .map(this::certificateTransformToCertificateInfo)
+                .toList();
+
+        return new PositionLevelInfo(
+                positionLevel.getPositionId(),
+                positionLevel.getPositionName(),
+                list);
+    }
+
+    private CertificateTypeInfo certificateTransformToCertificateInfo(CertificateEntityType certificateType) {
+        return new CertificateTypeInfo(
+                certificateType.getCertificateTypeId(),
+                certificateType.getCertificateTypeName());
     }
 }

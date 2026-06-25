@@ -1,12 +1,17 @@
 package com.example.navigation.entity.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.Comment;
+
+import com.example.navigation.entity.Recruitment.Recruitment;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,13 +38,15 @@ public class Company {
     @Comment("营业执照")
     private String businessLicense;
 
+    @OneToMany(mappedBy = "company")
+    private List<Recruitment> recruitments = new ArrayList<>();
+
     protected Company() {
 
     }
 
-    public Company(Integer companyId, String companyName, String companyAccount, String password, String avatarUrl,
+    public Company(String companyName, String companyAccount, String password, String avatarUrl,
             String businessLicense) {
-        this.companyId = companyId;
         this.companyName = companyName;
         this.companyAccount = companyAccount;
         this.password = password;
@@ -94,7 +101,5 @@ public class Company {
     public void setBusinessLicense(String businessLicense) {
         this.businessLicense = businessLicense;
     }
-
-    
 
 }

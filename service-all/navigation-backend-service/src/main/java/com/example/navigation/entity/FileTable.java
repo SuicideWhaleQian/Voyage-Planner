@@ -27,8 +27,7 @@ public class FileTable {
 
     }
 
-    public FileTable(Integer fileId, String path, String localPath, String type) {
-        this.fileId = fileId;
+    public FileTable(String path, String localPath, String type) {
         this.path = path;
         this.localPath = localPath;
         this.type = type;
