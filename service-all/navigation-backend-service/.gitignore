@@ -41,6 +41,6 @@ build/
 ### VS Code ###
 .vscode/
 *.yaml
-*.yml
+**.yml
 *.http
 /upload/
