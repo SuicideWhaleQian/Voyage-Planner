@@ -27,19 +27,24 @@ public class Company {
     @Comment(value = "公司密码")
     private String password;
 
-    @Comment("头像地址")
+    @Comment("LOGO地址")
     private String avatarUrl;
+
+    @Comment("营业执照")
+    private String businessLicense;
 
     protected Company() {
 
     }
 
-    public Company(Integer companyId, String companyName, String companyAccount, String password, String avatarUrl) {
+    public Company(Integer companyId, String companyName, String companyAccount, String password, String avatarUrl,
+            String businessLicense) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.companyAccount = companyAccount;
         this.password = password;
         this.avatarUrl = avatarUrl;
+        this.businessLicense = businessLicense;
     }
 
     public Integer getCompanyId() {
@@ -81,5 +86,15 @@ public class Company {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    
 
 }

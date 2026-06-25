@@ -1,10 +1,79 @@
 package com.example.navigation.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.navigation.dto.request.SaveCompanyRequest;
+import com.example.navigation.dto.response.CompanyInfo;
+import com.example.navigation.entity.user.Company;
+import com.example.navigation.exception.BusinessException;
+import com.example.navigation.repository.CompanyRepository;
 import com.example.navigation.service.CompanyService;
+import com.example.navigation.util.UserUtil;
 
 @Service
-public class CompanyServiceImpl implements CompanyService{
-    
+public class CompanyServiceImpl implements CompanyService {
+    private final CompanyRepository companyRepository;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
+
+    @Override
+    public CompanyInfo saveCompany(SaveCompanyRequest entity) {
+        if (entity == null) {
+            throw new BusinessException(400, "公司实体不能为空");
+        }
+
+        String companyName = entity.companyName();
+        if (companyName == null || companyName.isEmpty()) {
+            throw new BusinessException(401, "公司名称不能为空");
+        }
+
+        String certificateImageUrl = entity.businessLicense();
+        if (certificateImageUrl == null || certificateImageUrl.isEmpty()) {
+            throw new BusinessException(401, "公司营业执照不能为空");
+        }
+
+        String companyLogoUrl = entity.companyLogoUrl();
+        if (companyLogoUrl == null || companyLogoUrl.isBlank()) {
+            throw new BusinessException(401, "请上传公司logo");
+        }
+
+        // 随机公司账号
+        String randomAccount = UserUtil.generateAccount("1023");
+
+        Company newCompany = new Company(
+                null,
+                entity.companyName(),
+                randomAccount,
+                entity.password(),
+                entity.companyLogoUrl(),
+                entity.businessLicense());
+
+        Company company = companyRepository.save(newCompany);
+        return companyTransformCompanyInfo(company);
+    }
+
+    private CompanyInfo companyTransformCompanyInfo(Company company) {
+        return new CompanyInfo(
+                company.getCompanyId(),
+                company.getCompanyName(),
+                company.getCompanyAccount(),
+                company.getAvatarUrl(),
+                company.getBusinessLicense());
+    }
+
+    @Override
+    public List<CompanyInfo> findAllCompany() {
+        List<CompanyInfo> list = companyRepository
+                .findAll()
+                .stream()
+                .map(this::companyTransformCompanyInfo)
+                .toList();
+
+        return list;
+    }
+
 }
