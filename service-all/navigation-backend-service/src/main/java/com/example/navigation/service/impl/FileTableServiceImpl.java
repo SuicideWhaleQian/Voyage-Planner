@@ -55,8 +55,12 @@ public class FileTableServiceImpl implements FileTableService {
             Files.createDirectories(uploadDir);
             Path destPath = uploadDir.resolve(newFileName);
 
+            if (destPath == null) {
+                throw new BusinessException(500, "文件上传路径不存在");
+            }
+
             file.transferTo(destPath);
-            String networkPath = filesServerConfig.networkPath() +"/"+ newFileName;
+            String networkPath = filesServerConfig.networkPath() + "/" + newFileName;
 
             FileTable fileTable = new FileTable(
                     null,
