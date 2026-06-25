@@ -40,7 +40,9 @@ build/
 
 ### VS Code ###
 .vscode/
-*.yaml
-**.yml
-*.http
+application.yaml
+application.yml
+application-*.yaml
+application-*.yml
 /upload/
+/*.http
