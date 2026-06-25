@@ -15,6 +15,8 @@ import com.example.navigation.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
