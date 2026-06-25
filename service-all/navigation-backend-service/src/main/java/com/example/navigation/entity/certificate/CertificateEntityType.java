@@ -24,6 +24,11 @@ public class CertificateEntityType {
         this.certificateTypeName = certificateTypeName;
     }
 
+    public CertificateEntityType() {
+
+    }
+
+
     public Integer getCertificateTypeId() {
         return certificateTypeId;
     }

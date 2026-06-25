@@ -44,6 +44,8 @@ public class CertificateEntity {
         this.certificatePhotoUrl = certificatePhotoUrl;
     }
 
+
+
     public Integer getCertificateId() {
         return certificateId;
     }
