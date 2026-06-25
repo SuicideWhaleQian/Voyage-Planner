@@ -32,22 +32,22 @@ public class CertificateEntityServiceImpl implements CertificateEntityService {
     public CertificateInfo uploadCertificate(UserUploadCertificateRequest uploadCertificateRequest) {
         Integer certificateTypeId = uploadCertificateRequest.certificateTypeId();
         if (certificateTypeId == null) {
-            throw new BusinessException(401, "证书类型不能为空");
+            throw new BusinessException(403, "证书类型不能为空");
         }
 
         Integer userId = uploadCertificateRequest.userId();
         if (userId == null) {
-            throw new BusinessException(401, "用户id不能为空");
+            throw new BusinessException(403, "用户id不能为空");
         }
 
         String certificateImageUrl = uploadCertificateRequest.certificateImageUrl();
 
         if (certificateImageUrl == null || certificateImageUrl.isBlank()) {
-            throw new BusinessException(401, "资源地址不能为空");
+            throw new BusinessException(403, "资源地址不能为空");
         }
 
         CertificateEntityType certificateType = certificateEntityTypeRepository.findById(certificateTypeId)
-                .orElseThrow(() -> new BusinessException(400, "证书类型错误"));
+                .orElseThrow(() -> new BusinessException(403, "证书类型错误"));
 
         User user = userRepository.findById(certificateTypeId).orElseThrow(() -> new BusinessException(400, "不存在的用户"));
 
@@ -65,7 +65,7 @@ public class CertificateEntityServiceImpl implements CertificateEntityService {
     @Override
     public List<CertificateInfo> findAllCertificateByUser(Integer userId) {
         if (userId == null) {
-            throw new BusinessException(401, "请上传正确用户");
+            throw new BusinessException(403, "请上传正确用户");
         }
 
         User user = userRepository.findById(userId).orElseThrow(() -> new BusinessException(400, "用户不存在"));

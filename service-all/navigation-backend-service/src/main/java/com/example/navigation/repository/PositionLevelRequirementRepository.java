@@ -1,10 +1,9 @@
 package com.example.navigation.repository;
 
-import com.example.navigation.entity.position.PositionLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.navigation.entity.position.PositionLevelRequirement;
-import org.springframework.data.jpa.repository.Query;
+
 
 import java.util.List;
 

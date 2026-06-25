@@ -1,17 +1,15 @@
 package com.example.navigation.service;
 
-
-import com.example.navigation.dto.request.PositionLevelRequest;
 import com.example.navigation.dto.response.PositionLevelInfo;
 
 import java.util.List;
 
 public interface PositionLevelService {
 
-    //查询所有岗位
+    // 查询所有岗位
     List<PositionLevelInfo> findAllPositionLevels();
 
-    //根据用户id查询岗位
-    PositionLevelInfo findPositionLevelById(PositionLevelRequest request);
-    
+    // 根据用户id查询岗位
+    PositionLevelInfo findPositionLevelByUserId(Integer userId);
+
 }

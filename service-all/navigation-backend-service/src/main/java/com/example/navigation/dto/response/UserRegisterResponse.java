@@ -4,15 +4,15 @@ public class UserRegisterResponse {
 
     private Integer userId;
     private String userName;
-
+    private String account;
 
     public UserRegisterResponse() {
     }
 
-    public UserRegisterResponse(Integer userId, String userName) {
+    public UserRegisterResponse(Integer userId, String userName, String account) {
         this.userId = userId;
         this.userName = userName;
-
+        this.account = account;
     }
 
     // Getter 和 Setter
@@ -32,5 +32,12 @@ public class UserRegisterResponse {
         this.userName = userName;
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
 }

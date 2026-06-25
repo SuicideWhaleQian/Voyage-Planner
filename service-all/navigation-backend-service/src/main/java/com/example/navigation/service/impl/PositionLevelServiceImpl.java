@@ -1,6 +1,5 @@
 package com.example.navigation.service.impl;
 
-import com.example.navigation.dto.request.PositionLevelRequest;
 import com.example.navigation.dto.response.PositionLevelInfo;
 import com.example.navigation.entity.position.PositionLevel;
 import com.example.navigation.entity.user.User;
@@ -21,12 +20,10 @@ public class PositionLevelServiceImpl implements PositionLevelService {
 
     private final UserRepository userRepository;
 
-    public PositionLevelServiceImpl(PositionLevelRepository positionLevelRepository,UserRepository userRepository) {
+    public PositionLevelServiceImpl(PositionLevelRepository positionLevelRepository, UserRepository userRepository) {
         this.positionLevelRepository = positionLevelRepository;
         this.userRepository = userRepository;
     }
-
-
 
     @Override
     public List<PositionLevelInfo> findAllPositionLevels() {
@@ -40,20 +37,18 @@ public class PositionLevelServiceImpl implements PositionLevelService {
         return positionLevels.stream()
                 .map(level -> new PositionLevelInfo(
                         level.getPositionId(),
-                        level.getPositionName()
-                ))
+                        level.getPositionName()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public PositionLevelInfo findPositionLevelById(PositionLevelRequest request){
-
-        if (request == null || request.getUserId() == null) {
+    public PositionLevelInfo findPositionLevelByUserId(Integer userId) {
+        if (userId == null) {
             throw new BusinessException(400, "用户ID不能为空");
         }
 
         // 根据用户ID查询用户信息（自动关联查询职位级别）
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(404, "用户不存在"));
 
         // 获取用户的职位级别
@@ -62,11 +57,9 @@ public class PositionLevelServiceImpl implements PositionLevelService {
             throw new BusinessException(404, "该用户未设置职位级别");
         }
 
-
         return new PositionLevelInfo(
                 positionLevel.getPositionId(),
-                positionLevel.getPositionName()
-        );
+                positionLevel.getPositionName());
     }
 
 }

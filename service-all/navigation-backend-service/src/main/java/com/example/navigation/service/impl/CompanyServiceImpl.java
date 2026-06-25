@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.navigation.dto.request.CompanyLoginRequest;
 import com.example.navigation.dto.request.SaveCompanyRequest;
 import com.example.navigation.dto.response.CompanyInfo;
 import com.example.navigation.entity.user.Company;
@@ -56,15 +57,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyTransformCompanyInfo(company);
     }
 
-    private CompanyInfo companyTransformCompanyInfo(Company company) {
-        return new CompanyInfo(
-                company.getCompanyId(),
-                company.getCompanyName(),
-                company.getCompanyAccount(),
-                company.getAvatarUrl(),
-                company.getBusinessLicense());
-    }
-
     @Override
     public List<CompanyInfo> findAllCompany() {
         List<CompanyInfo> list = companyRepository
@@ -76,4 +68,29 @@ public class CompanyServiceImpl implements CompanyService {
         return list;
     }
 
+    @Override
+    public CompanyInfo companyLogin(CompanyLoginRequest entity) {
+        if (entity.companyAccount() == null || entity.companyAccount().isEmpty()) {
+            throw new BusinessException(403, "账号不能为空");
+        }
+
+        if (entity.password() == null || entity.password().isEmpty()) {
+            throw new BusinessException(403, "请输入密码");
+        }
+
+        Company company = companyRepository
+                .findByCompanyAccountAndPassword(entity.companyAccount(), entity.password())
+                .orElseThrow(() -> new BusinessException(401, "账号或密码错误"));
+
+        return companyTransformCompanyInfo(company);
+    }
+
+    private CompanyInfo companyTransformCompanyInfo(Company company) {
+        return new CompanyInfo(
+                company.getCompanyId(),
+                company.getCompanyName(),
+                company.getCompanyAccount(),
+                company.getAvatarUrl(),
+                company.getBusinessLicense());
+    }
 }

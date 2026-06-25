@@ -12,10 +12,10 @@ import com.example.navigation.entity.user.User;
 import com.example.navigation.exception.BusinessException;
 import com.example.navigation.repository.UserRepository;
 import com.example.navigation.service.UserService;
+import com.example.navigation.util.UserUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
-
 
     private final UserRepository userRepository;
 
@@ -52,40 +52,42 @@ public class UserServiceImpl implements UserService {
                 positionLevelInfo);
     }
 
-
     @Override
     public UserRegisterResponse register(UserRegisterRequest request) {
         // 1. 参数校验
         if (request.getUserName() == null || request.getUserName().trim().isEmpty()) {
-            return new UserRegisterResponse(null, null);
+            throw new BusinessException(402, "用户名称不能为空");
         }
 
         if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
-            return new UserRegisterResponse(null, null);
+            throw new BusinessException(402, "密码不能为空");
         }
 
         // 2. 检查用户名是否已存在
         if (userRepository.existsByUserName(request.getUserName())) {
-            return new UserRegisterResponse(null, request.getUserName());
+            throw new BusinessException(402, "用户名称已存在");
         }
 
         // 3. 创建新用户
 
+        // 随机账号
+        String account = UserUtil.generateAccount("3304");
+
         User newUser = new User();
         newUser.setUserName(request.getUserName());
-        newUser.setUserAccount(request.getUserName());
+        newUser.setUserAccount(account);
         newUser.setPassword(request.getPassword());
         newUser.setAvatarUrl(null);
         newUser.setPositionLevel(null);
 
-         //4. 保存用户
+        // 4. 保存用户
         User savedUser = userRepository.save(newUser);
 
         // 5. 返回注册结果
         return new UserRegisterResponse(
                 savedUser.getUserId(),
-                savedUser.getUserName()
-        );
+                savedUser.getUserName(),
+                account);
 
     }
 }

@@ -28,18 +28,18 @@ public class FileTableServiceImpl implements FileTableService {
     @Override
     public String uploadFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new BusinessException(400, "上传的文件不能为空");
+            throw new BusinessException(403, "上传的文件不能为空");
         }
 
         // 获取文件原名称
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || originalFilename.trim().isEmpty()) {
-            throw new BusinessException(400, "文件名称不能为空");
+            throw new BusinessException(403, "文件名称不能为空");
         }
 
         int lastDotIndexOf = originalFilename.lastIndexOf(".");
         if (lastDotIndexOf == -1 || lastDotIndexOf == originalFilename.length() - 1) {
-            throw new BusinessException(400, "文件格式不正确");
+            throw new BusinessException(403, "文件格式不正确");
         }
 
         // 获取文件后缀
